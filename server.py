@@ -4,7 +4,7 @@ import tensorflow as tf
 import json
 import tempfile
 from flask import Flask, request, redirect, url_for, flash, send_from_directory, jsonify
-from hvass.inception import maybe_download, Inception
+from hvass.hvass.inception import maybe_download, Inception
 from werkzeug.utils import secure_filename
 
 UPLOAD_FOLDER = './data/tmp/'
