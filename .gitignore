@@ -40,3 +40,11 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+
+# Tensorflow virtual env folders
+api/data/
+api/bin/
+api/lib/
+api/include/
+api/share/
