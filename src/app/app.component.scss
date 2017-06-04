@@ -1,0 +1,20 @@
+:host {
+  md-card.class-card {
+    margin-top: 24px;
+    img {
+      max-width: 600px;
+      max-height: 400px;
+    }
+  }
+  .toolbar-spacer {
+    /* This fills the remaining space, by using flexbox. Every toolbar row uses a flexbox row layout. */
+    flex: 1 1 auto;
+  }
+
+  a md-icon {
+    height: 26px;
+    margin: 0 4px 3px 0;
+  }
+
+}
+

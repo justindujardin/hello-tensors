@@ -1,27 +1,36 @@
-<!-- Toolbar -->
-<main>
-  <div>
-    <h1>Classify an Image Using InceptionV3</h1>
-    <h3>take a picture on your phone, or upload one from your computer.</h3>
-    <!-- Consider: http://valor-software.com/ng2-file-upload/ -->
-    <form>
-      <input name="photo" type="file" (change)="onChooseFile($event)"/>
-    </form>
-    <!-- Loading spinner-->
-    <div class="uploading-progress"></div>
-  </div>
+<md-toolbar color="primary">
+  <span>Hello Tensors</span>
+  <span class="toolbar-spacer"></span>
+  <a href="https://github.com/justindujardin/hello-tensors" target="_blank" md-button>
+    <md-icon>code</md-icon>
+    GITHUB</a>
+</md-toolbar>
+<md-card>
+  <md-card-title>Classify an Image</md-card-title>
+  <md-card-subtitle>take a picture on your phone, or upload one from your computer.</md-card-subtitle>
+  <!-- Consider: http://valor-software.com/ng2-file-upload/ -->
+  <form>
+    <input name="photo" type="file" (change)="onChooseFile($event)"/>
+  </form>
+</md-card>
 
-  <div class="tensor-cards" *ngIf="imageDataUrl$ | async">
-    <div class="mdl-card__media">
-      <img [src]="imageDataUrl$ | async"/>
-    </div>
-  </div>
-  <div class="tensor-classes">
-    <ul>
-      <li *ngFor="let classTuple of (classes$ | async)">
-        {{classTuple[0]}} = {{classTuple[1] * 100}}%
-      </li>
-    </ul>
-    <!-- ngFor class of classes -->
-  </div>
+<main fxLayout="column" fxLayoutAlign="center center" fxFlexFill>
+
+  <md-card class="class-card" *ngIf="imageDataUrl$ | async">
+    <img md-card-image [src]="imageDataUrl$ | async"/>
+    <md-card-title *ngIf="loading$ | async">
+      <md-icon>cloud_upload</md-icon> Uploading image...
+    </md-card-title>
+    <md-card-subtitle *ngIf="loading$ | async">
+      <md-progress-bar [value]="uploadProress$ | async"></md-progress-bar>
+    </md-card-subtitle>
+
+    <md-card-content>
+      <ul *ngIf="classes$ | async">
+        <li *ngFor="let classTuple of (classes$ | async)">
+          {{classTuple[0]}} = {{classTuple[1] * 100}}%
+        </li>
+      </ul>
+    </md-card-content>
+  </md-card>
 </main>

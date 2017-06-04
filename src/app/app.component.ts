@@ -17,7 +17,7 @@ type ClassesTuple = [string, number];
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
@@ -89,93 +89,3 @@ export class AppComponent {
     xhr.send(fd);
   }
 }
-
-//
-// function setProgress(percentageComplete) {
-//   console.log("uploading - " + percentageComplete);
-// }
-// function addImage(data) {
-//   var img = new Image();
-//   img.src = data;
-//   $('.tensor-cards .mdl-card__media').empty().append($(img));
-// }
-// function renderClasses(classes) {
-//   var progress = function (id) {
-//     return '<div id="' + id + '" class="mdl-progress mdl-js-progress"></div>'
-//   };
-//   var script = function (id, percent) {
-//     return '<script>' +
-//       'var percent = ' + percent + ';' +
-//       'var elem = document.getElementById("' + id + '");' +
-//       'document.getElementById("' + id + '").addEventListener("mdl-componentupgraded", function () {' +
-//       '  this.MaterialProgress.setProgress(' + percent + ');' +
-//       '});' +
-//       'setTimeout(function() { componentHandler.upgradeElement(document.getElementById("' + id + '")); }, 10);' +
-//       '<\/script>';
-//   };
-//   var items = '';
-//   var scripts = '';
-//   Object.keys(classes).forEach(function (className) {
-//     var value = classes[className];
-//     var percent = value * 100;
-//     className = className.replace(/[, ]+/g, "").trim();
-//     var label = '<div>' + className + Math.round(percent) + '%</div>';
-//     var subTitle = '<div>' + progress(className) + '</div>';
-//     var itemHtml = '<li>' + label + subTitle + '</li>';
-//     items = items + itemHtml;
-//     scripts = scripts + script(className, percent);
-//   });
-//
-//   var list = $('<ul class="demo-list-item mdl-list">' + items + '</ul>');
-//   var classesElem = $('.tensor-classes');
-//   classesElem.empty().append(list);
-//   classesElem.append($(scripts));
-// }
-//
-// function uploadBlob(dataBlob) {
-//   var $loading = $('.uploading-progress');
-//   $loading.addClass('is-active');
-//   var fd = new FormData();
-//   fd.append('photo', dataBlob);
-//   var xhr = new XMLHttpRequest();
-//   xhr.open('POST', '/classify', true);
-//   xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-//   xhr.setRequestHeader("pragma", "no-cache");
-//   xhr.upload.addEventListener("progress", function (e) {
-//     if (e.lengthComputable) {
-//       setProgress(Math.ceil((e.loaded / e.total) * 100))
-//     }
-//   }, false);
-//   xhr.addEventListener("load", function (e) {
-//     $loading.removeClass('is-active');
-//     $('.tensor-cards').show();
-//     var response = JSON.parse(e.target.responseText);
-//     renderClasses(response);
-// //            $('pre.classes').text(response);
-//   }, false);
-//   xhr.send(fd);
-// }
-// $().ready(function () {
-//   $('input[name=photo]').change(function (e) {
-//     var file = e.target.files[0];
-//     var reader = new FileReader();
-//     reader.readAsDataURL(file);
-//     reader.addEventListener("load", function () {
-//       addImage(reader.result);
-//     }, false);
-//     return uploadBlob(file);
-//     canvasResize(file, {
-//       width: 800,
-//       height: 600,
-//       crop: false,
-//       quality: 100,
-//       rotate: 0,
-//       callback: function (data, width, height) {
-//         addImage(data);
-//         var dataBlob = canvasResize('dataURLtoBlob', data);
-//         dataBlob.name = file.name;
-//         uploadBlob(dataBlob);
-//       }
-//     });
-//   });
-// });
