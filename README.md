@@ -45,13 +45,29 @@ We should see that a server comes online using port 5000. Great!
 
 We’re going to deploy the app to a free Heroku instance:
 
+Create your heroku app
+
+```sh
+heroku create
+```
+
+This will output your app name, which you will need to set in `src/environments/environments.prod.ts`. Your final
+environments file should look like this:
+
+```typescript
+export const environment = {
+  production: true,
+  apiHost: 'https://hello-tensors.herokuapp.com'
+};
+```
+
 Install the python buildpack:
 
 ```sh
-heroku buildpacks:set https://github.com/negativetwelve/heroku-buildpack-python
+heroku buildpacks:set heroku/python
 ```
 
-The `.buildpacks` file tells heroku to use the python buildpack in the `api` folder.
+Deploy by pushing to heroku directly (`git push heroku master`) or by using the `api.deploy.sh` file as a convenience.
 
 ## Angular Application
 
@@ -77,6 +93,10 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 Before running the tests make sure you are serving the app via `ng serve`.
+
+### Deploying the application to gh-pages
+
+Run `site.deploy.sh` in the root folder.
 
 ### Further help
 
