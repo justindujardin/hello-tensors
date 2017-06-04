@@ -35,9 +35,9 @@
       <md-progress-bar [value]="(bestGuess$ | async)[1] * 100"></md-progress-bar>
     </md-card-subtitle>
 
-    <img md-card-image [src]="imageDataUrl$ | async"/>
 
-    <md-card-content>
+    <md-card-content *ngIf="!(loading$ | async)">
+      <img md-card-image [src]="imageDataUrl$ | async"/>
       <md-list dense *ngIf="classes$ | async">
         <md-list-item *ngFor="let classTuple of (classes$ | async)">
           <md-icon md-list-icon>{{getSentimentFromPercentage(classTuple[1] * 100)}}</md-icon>

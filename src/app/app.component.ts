@@ -91,6 +91,7 @@ export class AppComponent {
   }
 
   uploadBlob(dataBlob) {
+    this._bestGuess$.next(null);
     this._uploadProgress$.next(0);
     this._loading$.next(true);
     const fd = new FormData();

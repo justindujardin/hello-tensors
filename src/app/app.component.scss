@@ -1,7 +1,12 @@
 :host {
+  main {
+    overflow-x: hidden;
+  }
   md-card.class-card {
     margin-top: 24px;
+    max-width: 100%;
     img {
+      margin-top: 24px;
       max-width: 600px;
     }
   }
