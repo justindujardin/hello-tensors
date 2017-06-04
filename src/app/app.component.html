@@ -17,20 +17,36 @@
 <main fxLayout="column" fxLayoutAlign="center center" fxFlexFill>
 
   <md-card class="class-card" *ngIf="imageDataUrl$ | async">
-    <img md-card-image [src]="imageDataUrl$ | async"/>
+    <!-- Loading state-->
     <md-card-title *ngIf="loading$ | async">
-      <md-icon>cloud_upload</md-icon> Uploading image...
+      <md-icon>cloud_upload</md-icon>
+      Uploading image...
     </md-card-title>
     <md-card-subtitle *ngIf="loading$ | async">
       <md-progress-bar [value]="uploadProress$ | async"></md-progress-bar>
     </md-card-subtitle>
 
+    <!-- Classified state -->
+    <md-card-title *ngIf="bestGuess$ | async">
+      <md-icon md-list-icon>{{getSentimentFromPercentage((bestGuess$ | async)[1] * 100)}}</md-icon>
+      {{(bestGuess$ | async)[0]}}
+    </md-card-title>
+    <md-card-subtitle *ngIf="bestGuess$ | async">
+      <md-progress-bar [value]="(bestGuess$ | async)[1] * 100"></md-progress-bar>
+    </md-card-subtitle>
+
+    <img md-card-image [src]="imageDataUrl$ | async"/>
+
     <md-card-content>
-      <ul *ngIf="classes$ | async">
-        <li *ngFor="let classTuple of (classes$ | async)">
-          {{classTuple[0]}} = {{classTuple[1] * 100}}%
-        </li>
-      </ul>
+      <md-list dense *ngIf="classes$ | async">
+        <md-list-item *ngFor="let classTuple of (classes$ | async)">
+          <md-icon md-list-icon>{{getSentimentFromPercentage(classTuple[1] * 100)}}</md-icon>
+          <h4 md-line>{{classTuple[0]}} ({{classTuple[1] * 100}}%)</h4>
+          <p md-line>
+            <md-progress-bar [value]="classTuple[1] * 100"></md-progress-bar>
+          </p>
+        </md-list-item>
+      </md-list>
     </md-card-content>
   </md-card>
 </main>

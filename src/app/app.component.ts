@@ -21,12 +21,17 @@ type ClassesTuple = [string, number];
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
-  title = 'app';
 
   private _loading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private _classes$: BehaviorSubject<ClassesTuple[]> = new BehaviorSubject<ClassesTuple[]>([]);
   private _uploadProgress$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   private _imageDataUrl$: ReplaySubject<string> = new ReplaySubject<string>(1);
+  private _bestGuess$: BehaviorSubject<ClassesTuple> = new BehaviorSubject<ClassesTuple>(null);
+
+  /**
+   * Top rated class found in image (if any)
+   */
+  bestGuess$: Observable<ClassesTuple> = this._bestGuess$;
 
   /**
    * True/false loading state
@@ -47,6 +52,29 @@ export class AppComponent {
    * The dataUrl of image data for displaying the classified image to the user
    */
   imageDataUrl$: Observable<string> = this._imageDataUrl$;
+
+  /**
+   * Assign a sentiment icon to value ranges for condfidence in classification
+   * @param percentage The percentage value between 0 and 100
+   * @returns {any} An md-icon name representing the sentiment felt about that value
+   */
+  getSentimentFromPercentage(percentage: number): string {
+    if (percentage < 10) {
+      return 'sentiment_very_dissatisfied'
+    }
+    if (percentage < 25) {
+      return 'sentiment_dissatisfied'
+    }
+    if (percentage < 60) {
+      return 'sentiment_neutral'
+    }
+    if (percentage > 60) {
+      return 'sentiment_satisfied'
+    }
+    if (percentage > 90) {
+      return 'sentiment_very_satisfied'
+    }
+  }
 
   onChooseFile(event) {
     console.log(event);
@@ -85,6 +113,7 @@ export class AppComponent {
       const target: any = e.target;
       const response = JSON.parse(target.responseText);
       this._classes$.next(response);
+      this._bestGuess$.next(response[0]);
     }, false);
     xhr.send(fd);
   }

@@ -1,7 +1,10 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
-import {MdButtonModule, MdCardModule, MdIconModule, MdProgressBarModule, MdToolbarModule} from '@angular/material';
+import {
+  MdButtonModule, MdCardModule, MdIconModule, MdListModule, MdProgressBarModule,
+  MdToolbarModule
+} from '@angular/material';
 import {FlexLayoutModule} from '@angular/flex-layout';
 
 @NgModule({
@@ -15,6 +18,7 @@ import {FlexLayoutModule} from '@angular/flex-layout';
     MdToolbarModule,
     MdIconModule,
     FlexLayoutModule,
+    MdListModule,
     MdProgressBarModule
   ],
   providers: [],
