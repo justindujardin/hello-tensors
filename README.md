@@ -25,8 +25,12 @@ sudo pip install --upgrade virtualenv
 Then we're going to [create a virtualenv with Python3](https://www.tensorflow.org/install/install_mac#installing_with_virtualenv) inside of the root project folder, and activate the environment:
 
 ```sh
+# Setup the virtual env with python v3
 virtualenv --system-site-packages -p python3 ./
-source ./bin/activate
+# activate the isolated python env to make `python` available on the commandline
+source ./bin/activate 
+# Install tensorflow, etc.
+pip install -r requirements.txt
 ```
 
 Finally, we'll start the api server to verify everything works:

@@ -43,8 +43,10 @@ Thumbs.db
 
 
 # Tensorflow virtual env folders
-api/data/
-api/bin/
-api/lib/
-api/include/
-api/share/
+data/
+bin/
+lib/
+include/
+share/
+.Python
+pip-selfcheck.json

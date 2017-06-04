@@ -1,24 +1,21 @@
-import os
 import numpy as np
-import tensorflow as tf
-import json
+import os
 import tempfile
-from flask import Flask, request, redirect, url_for, flash, send_from_directory, jsonify
-from hvass.hvass.inception import maybe_download, Inception
-from werkzeug.utils import secure_filename
-
+import tensorflow as tf
+from flask import Flask, request, jsonify
+from hvass.inception import maybe_download, Inception
+from flask_cors import CORS, cross_origin
 UPLOAD_FOLDER = './data/tmp/'
-ALLOWED_EXTENSIONS = set(['jpg', 'jpeg'])
-app = Flask(__name__)
 
 # Flask App for REST endpoints
 app = Flask(__name__, static_url_path='')
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 # -----------------------------------------------------------------------------
-# Shared inception model state, see: http://flask.pocoo.org/docs/0.12/appcontext/
+# Shared inception model state
 # -----------------------------------------------------------------------------
 model = None
-
 
 def get_inception():
     global model
@@ -27,10 +24,6 @@ def get_inception():
         model = Inception()
         tf.summary.FileWriter('./data/logs/', model.graph)
     return model
-
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # -----------------------------------------------------------------------------
 # Given the filepath to a JPEG image, classify it and return an array of the
@@ -54,7 +47,7 @@ def classify_image(filename, k=10):
     # The index is sorted lowest-to-highest values. Take the last k.
     top_k = idx[-k:]
 
-    result = {}
+    result = []
 
     # Iterate the top-k classes in reversed order (i.e. highest first).
     for cls in reversed(top_k):
@@ -64,12 +57,13 @@ def classify_image(filename, k=10):
         # Predicted score (or probability) for this class.
         score = pred[cls]
 
-        result[name] = np.asscalar(score);
-    print('classes ' + json.dumps(obj=result, indent=2))
+        # output as tuple [class, score]
+        result.append([name, np.asscalar(score)]);
     return result
 
 
-@app.route('/classify', methods=['POST'])
+@app.route('/api/classify', methods=['POST'])
+@cross_origin()
 def classify():
     """
     Classify an uploaded image
@@ -81,9 +75,8 @@ def classify():
     if file and file.content_type != 'image/jpeg':
         return jsonify({'error': 'only deals with jpeg'})
     elif file:
-        filename = secure_filename(file.filename)
         # The temporary file name for the image
-        tempFilePath = os.path.join(UPLOAD_FOLDER, tempfile.NamedTemporaryFile().name + '.jpeg')
+        tempFilePath = tempfile.NamedTemporaryFile().name + '.jpeg'
         # Write to disk
         file.save(tempFilePath)
         # Classify image on disk
